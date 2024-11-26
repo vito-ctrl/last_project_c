@@ -27,7 +27,7 @@ int main() {
     int option;
     int quit = 1;
 
-    while (quit == 1) {
+    do {
         // Display the menu
         printf("\n<<<<<<<<<<<<<<<<menu>>>>>>>>>>>>>>>>>>>\n");
         printf("\n1 .    add a task      . \n");
@@ -41,7 +41,7 @@ int main() {
         scanf("%d", &option);
         printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
-        // Execute the corresponding function based on user input
+        // Execute function based on user input
         if (option >= 1 && option <= 6) {
             switch (option) {
                 case 1:
@@ -63,16 +63,16 @@ int main() {
                     filterByPriority(tasks, tk, priority);
                     break;
                 case 6:
-                    quit = 0; // Exit the loop and terminate the program
+                    quit = 0; 
                     break;
             }
-        } else {
-            printf("Invalid option. Please enter a number between 1 and 6.\n");
+        }else if(option > 6 || option < 1){
+            printf("invalide operation !");
         }
-    }
-
+    }while(quit == 1);
     return 0;
 }
+
 
 // ------------------------------------------------------------------------
 
@@ -100,7 +100,6 @@ int verify_day(int day, int month, int year) {
 }
 
 //----------------------------------------------------------------------------
-
 int addTask(struct details tasks[], int tk) {
     int day, month, year;
     printf("\n<<<<<<<<<<<<<<add task>>>>>>>>>>>>>>>\n");
@@ -109,6 +108,7 @@ int addTask(struct details tasks[], int tk) {
     printf("\nTask description: ");
     scanf(" %[^\n]", tasks[tk].description);
 
+    // while function for valide date
     while (1) {
         printf("\nTask date in this format (MM-DD-YYYY): ");
         scanf("%d-%d-%d", &month, &day, &year);
@@ -120,12 +120,15 @@ int addTask(struct details tasks[], int tk) {
         }
     }
 
+    // do loop for invalid priority
+    do{
     printf("\nTask priority (1 for high, 0 for low): ");
     scanf("%d", &tasks[tk].priority);
     if (tasks[tk].priority != 1 && tasks[tk].priority != 0) {
         printf("Invalid number. Please enter a valid number.\n");
     }
-
+    }while (tasks[tk].priority != 1 && tasks[tk].priority != 0);
+    
     printf("\n<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>\n");
     return tk + 1;
 }
@@ -147,23 +150,40 @@ void viewTasks(struct details tasks[], int tk) {
 //------------------------------------------------------------------------------
 
 void editTask(struct details tasks[], int tk) {
+    int day, month, year;
     int taskNumber;
     printf("\n<<<<<<<<<<<<<<edit task>>>>>>>>>>>>>>>\n");
-    printf("Enter the task number to edit: ");
+
+    // do loop for invalide task number
+    do{
+    printf("\nEnter the task number to edit: ");
     scanf("%d", &taskNumber);
+
+    }while(taskNumber > tk || taskNumber < tk);
     if (taskNumber > 0 && taskNumber <= tk) {
         taskNumber--; // Adjust for zero-based index
-        printf("Editing Task %d:\n", taskNumber + 1);
-        printf("New title: ");
+        printf("Editing Task number %d:\n", taskNumber + 1);
+        printf("\nNew title: ");
         scanf(" %[^\n]", tasks[taskNumber].title);
-        printf("New description: ");
+        printf("\nNew description: ");
         scanf(" %[^\n]", tasks[taskNumber].description);
-        printf("New date (MM-DD-YYYY): ");
-        scanf(" %[^\n]", tasks[taskNumber].date);
-        printf("New priority (1 for high, 0 for low): ");
-        scanf("%d", &tasks[taskNumber].priority);
-    } else {
-        printf("Invalid task number.\n");
+
+        // while loop for valide edit date 
+        while (1) {
+        printf("\nTask date in this format (MM-DD-YYYY): ");
+        scanf("%d-%d-%d", &month, &day, &year);
+        if (verify_day(day, month, year)) {
+            sprintf(tasks[taskNumber].date, "%02d-%02d-%04d", month, day, year);
+            break;
+        } else {
+            printf("Invalid date. Please enter a valid date in MM-DD-YYYY format.\n");
+            }
+        }
+        // do loop for valide priority
+        do{
+            printf("\nNew priority (1 for high, 0 for low): ");
+            scanf("%d", &tasks[taskNumber].priority);
+        }while(tasks[taskNumber].priority != 0 && tasks[taskNumber].priority != 1);
     }
 }
 
