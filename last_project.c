@@ -63,6 +63,7 @@ int main() {
                     filterByPriority(tasks, tk, priority);
                     break;
                 case 6:
+                    printf("thank you for using One Hand Task Manager. Goodbye!");
                     quit = 0; 
                     break;
             }
@@ -128,6 +129,7 @@ int addTask(struct details tasks[], int tk) {
         printf("Invalid number. Please enter a valid number.\n");
     }
     }while (tasks[tk].priority != 1 && tasks[tk].priority != 0);
+    printf("\nYour task has been successfully added !");
     
     printf("\n<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>\n");
     return tk + 1;
@@ -145,6 +147,7 @@ void viewTasks(struct details tasks[], int tk) {
         printf("Priority: %s\n", tasks[i].priority ? "High" : "Low");
         printf("\n");
     }
+    printf("No tasks to display. Please add a task ");
 }
 
 //------------------------------------------------------------------------------
@@ -184,6 +187,7 @@ void editTask(struct details tasks[], int tk) {
             printf("\nNew priority (1 for high, 0 for low): ");
             scanf("%d", &tasks[taskNumber].priority);
         }while(tasks[taskNumber].priority != 0 && tasks[taskNumber].priority != 1);
+        printf("Task updated successfully!");
     }
 }
 
@@ -200,13 +204,12 @@ int deleteTask(struct details tasks[], int tk) {
             tasks[i] = tasks[i + 1];
         }
         tk--; // Decrement the number of tasks
-        printf("Task %d deleted.\n", taskNumber + 1);
+        printf("Task %d deleted successfully!\n", taskNumber + 1);
     } else {
         printf("Invalid task number.\n");
     }
     return tk; // Return the updated number of tasks
 }
-
 //-----------------------------------------------------------------------------
 
 void filterByPriority(struct details tasks[], int tk, int priority) {
@@ -221,4 +224,5 @@ void filterByPriority(struct details tasks[], int tk, int priority) {
             printf("\n");
         }
     }
+            printf("No tasks found");
 }
